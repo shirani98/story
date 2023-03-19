@@ -51,3 +51,5 @@ search in user accounts by admin : http://127.0.0.1:8000/api/v1/accounts/list/?q
 # jwt
 get token : http://127.0.0.1:8000/api/token/ <br />
 refresh token : http://127.0.0.1:8000/api/token/refresh/ <br />
+admin username : Admin
+admin password : adminsa455345
