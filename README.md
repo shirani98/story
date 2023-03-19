@@ -2,8 +2,8 @@
 list of all tags by pagination : http://127.0.0.1:8000/api/v1/tag/?page=1 <br />
 search in tags : http://127.0.0.1:8000/api/v1/tag/?q <br />
 add a tag : http://127.0.0.1:8000/api/v1/tag/add <br />
-delete a tag = http://127.0.0.1:8000/api/v1/tag/change/'id' (by admin) <br />
-update a tag = http://127.0.0.1:8000/api/v1/tag/change/'id' (by admin) <br />
+delete a tag : http://127.0.0.1:8000/api/v1/tag/change/'id' (by admin) <br />
+update a tag : http://127.0.0.1:8000/api/v1/tag/change/'id' (by admin) <br />
 
 # story
 list of all story by pagination : http://127.0.0.1:8000/api/v1/story/list/?page=1 <br />
@@ -51,5 +51,5 @@ search in user accounts by admin : http://127.0.0.1:8000/api/v1/accounts/list/?q
 # jwt
 get token : http://127.0.0.1:8000/api/token/ <br />
 refresh token : http://127.0.0.1:8000/api/token/refresh/ <br />
-admin username : Admin
-admin password : adminsa455345
+admin username : Admin <br />
+admin password : adminsa455345 <br />
