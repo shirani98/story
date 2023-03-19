@@ -27,7 +27,7 @@ list of user comments : http://127.0.0.1:8000/api/v1/comment/user-comment/ <br /
 list of story comments : http://127.0.0.1:8000/api/v1/comment/story-comment/'story-slug' <br />
 
 # category
-list of all story : http://127.0.0.1:8000/api/v1/category/list/ <br />
+list of all category : http://127.0.0.1:8000/api/v1/category/list/ <br />
 add a category : http://127.0.0.1:8000/api/v1/category/add/ <br />
 update a category : http://127.0.0.1:8000/api/v1/category/change/'id' <br />
 delete a category : http://127.0.0.1:8000/api/v1/category/change/'id' <br />
