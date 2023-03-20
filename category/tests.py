@@ -45,7 +45,7 @@ class CategoryRetrieveUpdateDestroyAPIViewTestCase(APITestCase):
         self.user = User.objects.create(username='admin', email='admin@example.com', type='Administrator')
         self.client.force_authenticate(user=self.user)
         self.category = Category.objects.create(name='Test category')
-        self.url = reverse('category:category-detail', args=[self.category.id])
+        self.url = reverse('category:category-detail', args=[self.category.name])
 
     def test_retrieve_category(self):
         response = self.client.get(self.url)
