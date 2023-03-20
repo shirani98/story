@@ -19,6 +19,7 @@ class StorySerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.alias')
     chapters = ChapterSerializer(many=True, read_only=True)
     categories = CategorySerializer(many=True, read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
 
     class Meta:
         model = Story
