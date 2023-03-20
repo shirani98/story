@@ -38,6 +38,7 @@ class TagAddAPIView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 class TagRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = 'name'
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [IsAdmin]

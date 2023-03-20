@@ -2,8 +2,8 @@
 list of all tags by pagination : http://127.0.0.1:8000/api/v1/tag/?page=1 <br />
 search in tags : http://127.0.0.1:8000/api/v1/tag/?q <br />
 add a tag : http://127.0.0.1:8000/api/v1/tag/add <br />
-delete a tag : http://127.0.0.1:8000/api/v1/tag/change/'id' (by admin) <br />
-update a tag : http://127.0.0.1:8000/api/v1/tag/change/'id' (by admin) <br />
+delete a tag : http://127.0.0.1:8000/api/v1/tag/change/'name' (by admin) <br />
+update a tag : http://127.0.0.1:8000/api/v1/tag/change/'name' (by admin) <br />
 
 # story
 list of all story by pagination : http://127.0.0.1:8000/api/v1/story/list/?page=1 <br />
@@ -29,14 +29,14 @@ list of story comments : http://127.0.0.1:8000/api/v1/comment/story-comment/'sto
 # category
 list of all category : http://127.0.0.1:8000/api/v1/category/list/ <br />
 add a category : http://127.0.0.1:8000/api/v1/category/add/ <br />
-update a category : http://127.0.0.1:8000/api/v1/category/change/'id' <br />
-delete a category : http://127.0.0.1:8000/api/v1/category/change/'id' <br />
+update a category : http://127.0.0.1:8000/api/v1/category/change/'name' <br />
+delete a category : http://127.0.0.1:8000/api/v1/category/change/'name' <br />
 
-# search
+# search for get stories
 search with body, brief, alias name : http://127.0.0.1:8000/api/v1/story/search/?q='a' <br />
-search category : http://127.0.0.1:8000/api/v1/story/search/?category='a' <br />
-search user : http://127.0.0.1:8000/api/v1/story/search/?user='a' <br />
-search tag : http://127.0.0.1:8000/api/v1/story/search/?user='tag' <br />
+search by category : http://127.0.0.1:8000/api/v1/story/search/?category='a' <br />
+search by user : http://127.0.0.1:8000/api/v1/story/search/?user='a' <br />
+search by tag : http://127.0.0.1:8000/api/v1/story/search/?tag='tag' <br />
 
 
 # account
@@ -44,8 +44,8 @@ registere user : http://127.0.0.1:8000/api/v1/accounts/registration/ <br />
 activate user : http://127.0.0.1:8000/api/v1/accounts/activation/'token'  <br />
 show last 10 users : http://127.0.0.1:8000/api/v1/accounts/last-user <br />
 list of all users : http://127.0.0.1:8000/api/v1/accounts/list/ (for admin) <br />
-change password by admin : http://127.0.0.1:8000/api/v1/accounts/change-password-admin/'id' <br />
-disable user by admin : http://127.0.0.1:8000/api/v1/accounts/disable-user-admin/'id' <br />
+change password by admin : http://127.0.0.1:8000/api/v1/accounts/change-password-admin/'email' <br />
+disable user by admin : http://127.0.0.1:8000/api/v1/accounts/disable-user-admin/'email' <br />
 search in user accounts by admin : http://127.0.0.1:8000/api/v1/accounts/list/?q='str' <br />
 
 # jwt

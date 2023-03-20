@@ -15,6 +15,6 @@ urlpatterns = [
     path('/activation/<str:token>/', ActivationAPIView.as_view(),name='activation'),
     path('/last-user/', LastUsersAPIView.as_view(),name='last_users'),
     path('/list/', UsersListAPIView.as_view(),name='users_list'),
-    path('/change-password-admin/<int:pk>', ChangePasswordView.as_view()),
-    path('/disable-user-admin/<int:user_id>', DisableUserAPIView.as_view()),
+    path('/change-password-admin/<str:email>/', ChangePasswordView.as_view()),
+    path('/disable-user-admin/<str:email>/', DisableUserAPIView.as_view()),
 ]

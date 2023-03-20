@@ -86,9 +86,10 @@ class ChangePasswordView(generics.UpdateAPIView):
     serializer_class = ChangePasswordAdminSerializer
     permission_classes = [IsAdmin]
     queryset = User.objects.all()
+    lookup_field = 'email'
 
     def get_object(self):
-        return self.queryset.get(pk=self.kwargs.get('pk'))
+        return self.queryset.get(email=self.kwargs.get('email'))
 
     def put(self, request, *args, **kwargs):
         user = self.get_object()
@@ -105,10 +106,10 @@ class ChangePasswordView(generics.UpdateAPIView):
 class DisableUserAPIView(APIView):
     permission_classes = [IsAdmin]
 
-    def patch(self, request, user_id):
-        user = get_object_or_404(User, id=user_id)
+    def patch(self, request, email):
+        user = get_object_or_404(User, email=email)
 
         user.is_active = False
         user.save()
 
-        return Response({'detail': f'User {user_id} has been disabled'}, status=status.HTTP_200_OK)
+        return Response({'detail': f'User {email} has been disabled'}, status=status.HTTP_200_OK)

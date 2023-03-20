@@ -1,51 +1,34 @@
 from rest_framework.permissions import BasePermission, IsAuthenticated
 
 
-class IsAuth(IsAuthenticated,BasePermission):
+class IsAuth(IsAuthenticated, BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method == 'GET':
             return True
-        if request.user.is_authenticated :
-            return True
-        return obj.user == request.user
+        return request.user.is_authenticated
 
 
-class IsAuthor(BasePermission):
+class IsUserType(BasePermission):
+    user_type = ''
+
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
-        return request.user.groups.filter(name='Author').exists() or request.user.type == 'Author'
+        return request.user.groups.filter(name=self.user_type).exists() or request.user.type == self.user_type
 
     def has_object_permission(self, request, view, obj):
         if request.method == 'GET':
             return True
-        if request.user.groups.filter(name='Author').exists() or request.user.type == 'Author' :
-            return True
-        return obj.user == request.user
-
-class IsAdmin(BasePermission):
-    def has_permission(self, request, view):
-        if not request.user.is_authenticated:
-            return False
-        return request.user.groups.filter(name='Administrator').exists() or request.user.type == 'Administrator'
-
-    def has_object_permission(self, request, view, obj):
-        if request.method == 'GET':
-            return True
-        if request.user.groups.filter(name='Administrator').exists() or request.user.type == 'Administrator':
-            return True
-        return obj.user == request.user
+        return self.has_permission(request, view)
 
 
-class IsReader(BasePermission):
-    def has_permission(self, request, view):
-        if not request.user.is_authenticated:
-            return False
-        return request.user.groups.filter(name='Reader').exists() or request.user.type == 'Reader'
+class IsAuthor(IsUserType):
+    user_type = 'Author'
 
-    def has_object_permission(self, request, view, obj):
-        if request.method == 'GET':
-            return True
-        if request.user.groups.filter(name='Admin').exists() or request.user.type == 'Reader':
-            return True
-        return obj.user == request.user
+
+class IsAdmin(IsUserType):
+    user_type = 'Administrator'
+
+
+class IsReader(IsUserType):
+    user_type = 'Reader'

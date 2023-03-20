@@ -20,6 +20,7 @@ class CategoryCreateAPIView(generics.CreateAPIView):
         serializer.save(user=self.request.user)
 
 class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    lookup_field = 'name'
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAdmin]

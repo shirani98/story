@@ -46,10 +46,13 @@ class UserSerializer(serializers.ModelSerializer):
     def get_story_count(self,obj):
         return Story.objects.filter(user=obj).count()
 
-class ChangePasswordAdminSerializer(serializers.Serializer):
+class ChangePasswordAdminSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     confirm_password = serializers.CharField(write_only=True, required=True)
 
+    class Meta:
+        model = User
+        fields = ('password', 'confirm_password')
     def validate(self, data):
         if data['password'] != data['confirm_password']:
             raise serializers.ValidationError("Passwords do not match.")
