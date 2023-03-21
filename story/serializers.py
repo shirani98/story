@@ -1,10 +1,10 @@
-from django.core.exceptions import ValidationError
-from django.utils.html import strip_tags
 from rest_framework import serializers
 
+from category.models import Category
 from category.serializers import CategorySerializer
 from comment.models import Comment
 from comment.serializers import CommentSerializer
+from tag.models import Tag
 from tag.serializers import TagSerializer
 
 from .models import Story
@@ -24,7 +24,9 @@ class StorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
         fields = '__all__'
-        read_only_fields = ('created_at', 'modified_date','slug','user',)
+        read_only_fields = ('created_at', 'modified_date', 'slug', 'user',)
+
+
 
 class StoryDetailSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source='user.alias')
@@ -45,12 +47,13 @@ class StoryDetailSerializer(serializers.ModelSerializer):
 
 
 class StoryCreatorSerializer(serializers.ModelSerializer):
+
+    user = serializers.ReadOnlyField(source='user.alias')
+    chapters = ChapterSerializer(many=True, read_only=True)
+    categories = serializers.ListField(child=serializers.CharField(max_length=50))
+    tags = serializers.ListField(child=serializers.CharField(max_length=50))
+
     class Meta:
         model = Story
         fields = '__all__'
         read_only_fields = ('created_at', 'modified_date','slug','user',)
-
-    def validate_body(self, value):
-        if strip_tags(value) != value:
-            raise serializers.ValidationError("Story body should not contain HTML tags.")
-        return value

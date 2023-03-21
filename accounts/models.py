@@ -28,7 +28,7 @@ class User(AbstractUser):
     saved_stories = models.ManyToManyField(Story, related_name='saved_by_users',null=True,blank=True)
 
     def __str__(self):
-        return self.alias
+        return self.alias or self.username
 
     @classmethod
     def generate_activation_token(cls, user_id):
