@@ -26,7 +26,7 @@ class TagListAPIViewTest(APITestCase):
 
     def test_pagination(self):
         for i in range(20):
-            Tag.objects.create(name=f'test{i}')
+            Tag.objects.create(name=f'mytest{i}')
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data['results']), 10)
