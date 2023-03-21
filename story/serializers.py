@@ -48,10 +48,6 @@ class StoryDetailSerializer(serializers.ModelSerializer):
 
 class StoryCreatorSerializer(serializers.ModelSerializer):
 
-    user = serializers.ReadOnlyField(source='user.alias')
-    chapters = ChapterSerializer(many=True, read_only=True)
-    categories = serializers.ListField(child=serializers.CharField(max_length=50))
-    tags = serializers.ListField(child=serializers.CharField(max_length=50))
 
     class Meta:
         model = Story
