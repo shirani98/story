@@ -14,7 +14,7 @@ class IsUserType(BasePermission):
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
-        return request.user.groups.filter(name=self.user_type).exists() or request.user.type == self.user_type
+        return request.user.groups.filter(name=self.user_type).exists() or request.user.type == self.user_type or request.user.groups.filter(name='Administrator').exists() or request.user.type == 'administrator'
 
     def has_object_permission(self, request, view, obj):
         if request.method == 'GET':
