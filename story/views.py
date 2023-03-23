@@ -69,6 +69,28 @@ class StoryCreateAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def create(self, request, *args, **kwargs):
+        data = request.data.copy()
+        # category
+        category_names = data.pop('categories', [])[0].split(",")
+        category_ids = Category.objects.filter(name__in=category_names).values_list('id', flat=True)
+        if len(category_names) != len(category_ids):
+            return Response({'detail': 'Category not found.'},status=status.HTTP_404_NOT_FOUND)
+        data['categories'] = list(category_ids)
+
+        # tag
+        tag_names = data.pop('tags', [])
+        if tag_names:
+            tag_names = tag_names[0].split(",")
+            tag_ids = Tag.objects.filter(name__in=tag_names).values_list('id', flat=True)
+            if len(tag_names) != len(tag_ids):
+                return Response({'detail': 'Tag not found.'},status=status.HTTP_404_NOT_FOUND)
+            data['tags'] = list(tag_ids)
+
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(data="Story created successfully.", status=status.HTTP_201_CREATED)
 
 class StoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'slug'

@@ -70,7 +70,7 @@ class StoryCreateAPIViewTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_create_story(self):
-        data = {'body': 'testbody', 'brief': 'testbrief', 'categories': self.category.id}
+        data = {'body': 'testbody', 'brief': 'testbrief', 'categories': [self.category.name]}
         response = self.client.post(self.url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -103,11 +103,12 @@ class StoryRetrieveUpdateDestroyAPIViewTestCase(APITestCase):
 
 class StoryCreatorSerializerTestCase(APITestCase):
     def setUp(self):
+        self.category = Category.objects.create(name='testcategories')
         self.data = {
             'body': 'test body',
             'brief': 'test brief',
             'user': User.objects.create_user(username='testuser', password='testpassword'),
-            'categories' : [Category.objects.create(name='testcategory').id]
+            'categories' : [[self.category.id]]
         }
         self.serializer = StoryCreatorSerializer(data=self.data)
 

@@ -48,8 +48,8 @@ class StoryDetailSerializer(serializers.ModelSerializer):
 
 
 class StoryCreatorSerializer(serializers.ModelSerializer):
-
-
+    categories = serializers.ListField(child=serializers.ListField(child=serializers.IntegerField()))
+    tags = serializers.ListField(required=False,child=serializers.ListField(child=serializers.IntegerField()))
     class Meta:
         model = Story
         fields = '__all__'
@@ -59,3 +59,19 @@ class StoryCreatorSerializer(serializers.ModelSerializer):
         if strip_tags(value) != value:
             raise serializers.ValidationError("Story body should not contain HTML tags.")
         return value
+
+    def validate_categories(self, value):
+        category_ids = []
+        for name in value:
+            for n in name:
+                category = Category.objects.get(id=str(n))
+                category_ids.append(category.id)
+        return category_ids
+
+    def validate_tags(self, value):
+        tag_ids = []
+        for name in value:
+            for n in name:
+                tag = Tag.objects.get(id=str(n))
+                tag_ids.append(tag.id)
+        return tag_ids
