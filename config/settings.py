@@ -44,11 +44,13 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "comment.apps.CommentConfig",
     "rest_framework",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -142,12 +144,7 @@ AUTH_TOKEN_CLASSES = [
     "rest_framework_simplejwt.tokens.AccessToken",
 ]
 
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-    "127.0.0.1:8080",
-    "localhost:8080",
-)
-
+CORS_ORIGIN_ALLOW_ALL = True
 
 REST_USE_JWT = True
 SIMPLE_JWT = {

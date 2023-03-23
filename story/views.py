@@ -1,5 +1,6 @@
 from django.db.models import Q
 from rest_framework import generics, permissions, status
+from rest_framework.exceptions import NotFound
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -81,9 +82,7 @@ class StoryCreateAPIView(generics.CreateAPIView):
             "id", flat=True
         )
         if len(category_names) != len(category_ids):
-            return Response(
-                {"detail": "Category not found."}, status=status.HTTP_404_NOT_FOUND
-            )
+            raise NotFound("Category not found!")
         data["categories"] = list(category_ids)
 
         # tag
@@ -94,9 +93,7 @@ class StoryCreateAPIView(generics.CreateAPIView):
                 "id", flat=True
             )
             if len(tag_names) != len(tag_ids):
-                return Response(
-                    {"detail": "Tag not found."}, status=status.HTTP_404_NOT_FOUND
-                )
+                raise NotFound("Tag not found!")
             data["tags"] = list(tag_ids)
 
         serializer = self.get_serializer(data=data)
@@ -139,7 +136,7 @@ class CreateSaveStoryAPIView(APIView):
         try:
             story = Story.objects.get(slug=story_slug)
         except Story.DoesNotExist:
-            return Response({"detail": "Story not found."})
+            raise NotFound("Story not found!")
 
         user.saved_stories.add(story)
         return Response({"detail": "Story saved successfully."})
@@ -155,7 +152,7 @@ class DeleteSavedStoryAPIView(generics.DestroyAPIView):
         try:
             story = user.saved_stories.get(slug=story_id)
         except Story.DoesNotExist:
-            return Response({"detail": "Story not found in saved stories."})
+            raise NotFound("Story not found in saved stories!")
 
         user.saved_stories.remove(story)
         return Response({"detail": "Story removed from saved stories successfully."})
