@@ -11,21 +11,21 @@ from tag.models import Tag
 
 # Create your models here.
 
+
 class Story(models.Model):
     body = models.TextField()
     brief = models.TextField(blank=True, null=True)
     slug = models.SlugField(unique=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     tags = models.ManyToManyField(Tag, blank=True)
     categories = models.ManyToManyField(Category)
-    chapters = models.ManyToManyField('self', blank=True, null=True, symmetrical=False)
+    chapters = models.ManyToManyField("self", blank=True, null=True, symmetrical=False)
 
     def save(self, *args, **kwargs):
         if strip_tags(self.body) != self.body:
-            raise ValidationError('Story body should not contain HTML tags.')
+            raise ValidationError("Story body should not contain HTML tags.")
         self.slug = slugify(self.body)[:20]
         if Story.objects.filter(slug=self.slug).exists():
             extra = str(randint(1, 10000000))

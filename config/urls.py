@@ -23,15 +23,12 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/v1/accounts', include('accounts.urls', namespace= 'accounts')),
-    path('api/v1/category', include('category.urls', namespace= 'category')),
-    path('api/v1/comment', include('comment.urls', namespace= 'comment')),
-    path('api/v1/story', include('story.urls', namespace= 'story')),
-    path('api/v1/tag', include('tag.urls', namespace= 'tag')),
-
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-
-
+    path("api/v1/accounts", include("accounts.urls", namespace="accounts")),
+    path("api/v1/category", include("category.urls", namespace="category")),
+    path("api/v1/comment", include("comment.urls", namespace="comment")),
+    path("api/v1/story", include("story.urls", namespace="story")),
+    path("api/v1/tag", include("tag.urls", namespace="tag")),
+    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
 ]

@@ -4,16 +4,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('story', '0001_initial'),
-        ('accounts', '0003_user_saved_stories'),
+        ("story", "0001_initial"),
+        ("accounts", "0003_user_saved_stories"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='saved_stories',
-            field=models.ManyToManyField(blank=True, null=True, related_name='saved_by_users', to='story.Story'),
+            model_name="user",
+            name="saved_stories",
+            field=models.ManyToManyField(
+                blank=True, null=True, related_name="saved_by_users", to="story.Story"
+            ),
         ),
     ]

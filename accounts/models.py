@@ -13,28 +13,29 @@ class User(AbstractUser):
     EMAIL_MAX_LENGTH = 254
 
     # custom user types
-    AUTHOR = 'author'
-    READER = 'reader'
-    ADMINISTRATOR = 'administrator'
+    AUTHOR = "author"
+    READER = "reader"
+    ADMINISTRATOR = "administrator"
     USER_TYPES = [
-        (AUTHOR, 'Author'),
-        (READER, 'Reader'),
-        (ADMINISTRATOR, 'Administrator'),
+        (AUTHOR, "Author"),
+        (READER, "Reader"),
+        (ADMINISTRATOR, "Administrator"),
     ]
 
-    alias = models.CharField(max_length=ALIAS_MAX_LENGTH,unique=True)
+    alias = models.CharField(max_length=ALIAS_MAX_LENGTH, unique=True)
     email = models.EmailField(max_length=EMAIL_MAX_LENGTH, unique=True)
     type = models.CharField(max_length=20, choices=USER_TYPES, default=READER)
-    saved_stories = models.ManyToManyField(Story, related_name='saved_by_users',null=True,blank=True)
+    saved_stories = models.ManyToManyField(
+        Story, related_name="saved_by_users", null=True, blank=True
+    )
 
     def __str__(self):
         return self.alias or self.username
 
     @classmethod
     def generate_activation_token(cls, user_id):
-        payload = {
-            'user_id': user_id,
-            'exp': datetime.utcnow() + timedelta(hours=24)
-        }
-        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256').decode('utf-8')
+        payload = {"user_id": user_id, "exp": datetime.utcnow() + timedelta(hours=24)}
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256").decode(
+            "utf-8"
+        )
         return token

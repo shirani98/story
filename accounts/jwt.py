@@ -28,17 +28,17 @@ class CustomJWTAuthentication(JSONWebTokenAuthentication):
         username = jwt_get_username_from_payload(payload)
 
         if not username:
-            msg = _('Invalid payload.')
+            msg = _("Invalid payload.")
             raise exceptions.AuthenticationFailed(msg)
 
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            msg = _('Invalid signature.')
+            msg = _("Invalid signature.")
             raise exceptions.AuthenticationFailed(msg)
 
         if not user.is_active:
-            msg = _('User account is disabled.')
+            msg = _("User account is disabled.")
             raise exceptions.AuthenticationFailed(msg)
 
         return user

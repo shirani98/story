@@ -6,9 +6,13 @@ from category.views import (
     CategoryRetrieveUpdateDestroyAPIView,
 )
 
-app_name =  'category'
+app_name = "category"
 urlpatterns = [
-    path('/list/', CategoryListAPIView.as_view(),name='category-list'),
-    path('/add/', CategoryCreateAPIView.as_view(),name='category-create'),
-    path('/change/<str:name>/', CategoryRetrieveUpdateDestroyAPIView.as_view(),name='category-detail'),
+    path("/list/", CategoryListAPIView.as_view(), name="category-list"),
+    path("/add/", CategoryCreateAPIView.as_view(), name="category-create"),
+    path(
+        "/change/<str:name>/",
+        CategoryRetrieveUpdateDestroyAPIView.as_view(),
+        name="category-detail",
+    ),
 ]

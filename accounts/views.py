@@ -24,15 +24,14 @@ class RegistrationAPIView(APIView):
     serializer_class = RegistrationSerializer
     permission_classes = []
 
-
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             token = User.generate_activation_token(user.id)
-            message = f'Click the following link to activate your account: {settings.CLIENT_BASE_URL}/api/v1/accounts/activation/{token}/'
+            message = f"Click the following link to activate your account: {settings.CLIENT_BASE_URL}/api/v1/accounts/activation/{token}/"
             send_mail(
-                subject='Activate your account',
+                subject="Activate your account",
                 message=message,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[user.email],
@@ -41,34 +40,44 @@ class RegistrationAPIView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class ActivationAPIView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, token):
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-            user_id = payload['user_id']
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            user_id = payload["user_id"]
             user = User.objects.get(id=user_id)
             user.is_active = True
             user.save()
-            return Response({'detail': 'Your account has been activated.'})
+            return Response({"detail": "Your account has been activated."})
         except jwt.exceptions.ExpiredSignatureError:
-            return Response({'detail': 'The activation link has expired.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "The activation link has expired."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         except (jwt.exceptions.DecodeError, User.DoesNotExist):
-            return Response({'detail': 'Invalid activation link.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Invalid activation link."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
 
 class LastUsersAPIView(APIView):
-    queryset = User.objects.order_by('-date_joined')[:10]
+    queryset = User.objects.order_by("-date_joined")[:10]
+
     def get(self, request):
-        users = User.objects.order_by('-date_joined')[:10]
+        users = User.objects.order_by("-date_joined")[:10]
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
 
 class UsersListAPIView(APIView):
-    queryset = User.objects.order_by('-date_joined')
+    queryset = User.objects.order_by("-date_joined")
+
     def get(self, request):
-        search_query = request.query_params.get('q', None)
+        search_query = request.query_params.get("q", None)
         if search_query:
             queryset = self.queryset.filter(
                 Q(alias__icontains=search_query) | Q(email__icontains=search_query)
@@ -82,26 +91,28 @@ class UsersListAPIView(APIView):
         serializer = UserSerializer(paginated_queryset, many=True)
         return paginator.get_paginated_response(serializer.data)
 
+
 class ChangePasswordView(generics.UpdateAPIView):
     serializer_class = ChangePasswordAdminSerializer
     permission_classes = [IsAdmin]
     queryset = User.objects.all()
-    lookup_field = 'email'
+    lookup_field = "email"
 
     def get_object(self):
-        return self.queryset.get(email=self.kwargs.get('email'))
+        return self.queryset.get(email=self.kwargs.get("email"))
 
     def put(self, request, *args, **kwargs):
         user = self.get_object()
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
-            password = serializer.validated_data['password']
+            password = serializer.validated_data["password"]
             user.set_password(password)
             user.save()
-            return Response({'status': 'password set'})
+            return Response({"status": "password set"})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class DisableUserAPIView(APIView):
     permission_classes = [IsAdmin]
@@ -112,4 +123,6 @@ class DisableUserAPIView(APIView):
         user.is_active = False
         user.save()
 
-        return Response({'detail': f'User {email} has been disabled'}, status=status.HTTP_200_OK)
+        return Response(
+            {"detail": f"User {email} has been disabled"}, status=status.HTTP_200_OK
+        )

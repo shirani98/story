@@ -8,12 +8,11 @@ from category.serializers import CategorySerializer
 
 
 class CategoryListAPIViewTestCase(APITestCase):
-
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse('category:category-list')
-        self.category_1 = Category.objects.create(name='Test category 1')
-        self.category_2 = Category.objects.create(name='Test category 2')
+        self.url = reverse("category:category-list")
+        self.category_1 = Category.objects.create(name="Test category 1")
+        self.category_2 = Category.objects.create(name="Test category 2")
 
     def test_get_categories(self):
         response = self.client.get(self.url)
@@ -22,30 +21,34 @@ class CategoryListAPIViewTestCase(APITestCase):
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-class CategoryCreateAPIViewTestCase(APITestCase):
 
+class CategoryCreateAPIViewTestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse('category:category-create')
-        self.user = User.objects.create(username='admin', email='admin@example.com', type='Administrator')
+        self.url = reverse("category:category-create")
+        self.user = User.objects.create(
+            username="admin", email="admin@example.com", type="Administrator"
+        )
         self.client.force_authenticate(user=self.user)
-        self.valid_payload = {'name': 'Test category'}
+        self.valid_payload = {"name": "Test category"}
 
     def test_create_category(self):
         response = self.client.post(self.url, self.valid_payload)
-        category = Category.objects.get(name=self.valid_payload['name'])
+        category = Category.objects.get(name=self.valid_payload["name"])
         serializer = CategorySerializer(category)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-class CategoryRetrieveUpdateDestroyAPIViewTestCase(APITestCase):
 
+class CategoryRetrieveUpdateDestroyAPIViewTestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create(username='admin', email='admin@example.com', type='Administrator')
+        self.user = User.objects.create(
+            username="admin", email="admin@example.com", type="Administrator"
+        )
         self.client.force_authenticate(user=self.user)
-        self.category = Category.objects.create(name='Test category')
-        self.url = reverse('category:category-detail', args=[self.category.name])
+        self.category = Category.objects.create(name="Test category")
+        self.url = reverse("category:category-detail", args=[self.category.name])
 
     def test_retrieve_category(self):
         response = self.client.get(self.url)
@@ -54,8 +57,8 @@ class CategoryRetrieveUpdateDestroyAPIViewTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_category(self):
-        updated_name = 'Updated test category'
-        response = self.client.patch(self.url, {'name': updated_name})
+        updated_name = "Updated test category"
+        response = self.client.patch(self.url, {"name": updated_name})
         self.category.refresh_from_db()
         serializer = CategorySerializer(self.category)
         self.assertEqual(response.data, serializer.data)

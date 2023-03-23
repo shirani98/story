@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-ap+rrgk$#dzic)-har4=b(5n=9t(wmu%%alsh&=ts&w7qb6r=_
 DEBUG = True
 
 ALLOWED_HOSTS = []
-CLIENT_BASE_URL = '127.0.0.1:8000'
+CLIENT_BASE_URL = "127.0.0.1:8000"
 
 # Application definition
 
@@ -43,9 +43,7 @@ INSTALLED_APPS = [
     "tag.apps.TagConfig",
     "accounts.apps.AccountsConfig",
     "comment.apps.CommentConfig",
-    'rest_framework',
-
-
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -130,50 +128,50 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = "accounts.User"
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'accounts.jwt.CustomJWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "accounts.jwt.CustomJWTAuthentication",
     ],
-    'PAGE_SIZE': 10,
+    "PAGE_SIZE": 10,
 }
 AUTH_TOKEN_CLASSES = [
-    'rest_framework_simplejwt.tokens.AccessToken',
+    "rest_framework_simplejwt.tokens.AccessToken",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = ('127.0.0.1:8080','localhost:8080',)
+CORS_ORIGIN_WHITELIST = (
+    "127.0.0.1:8080",
+    "localhost:8080",
+)
 
 
 REST_USE_JWT = True
 SIMPLE_JWT = {
-'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
-'ROTATE_REFRESH_TOKENS': False,
-'BLACKLIST_AFTER_ROTATION': True,
-
-'ALGORITHM': 'HS256',
-'SIGNING_KEY': SECRET_KEY,
-'VERIFYING_KEY': None,
-'AUDIENCE': None,
-'ISSUER': None,
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": None,
+    "AUDIENCE": None,
+    "ISSUER": None,
 }
 
 JWT_AUTH = {
-    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
-    'JWT_PAYLOAD_GET_USERNAME_HANDLER':
-    'accounts.utils.jwt_get_user_id_from_payload_handler',
-
+    "JWT_AUTH_HEADER_PREFIX": "Bearer",
+    "JWT_PAYLOAD_GET_USERNAME_HANDLER": "accounts.utils.jwt_get_user_id_from_payload_handler",
 }
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'your-email@gmail.com'
-EMAIL_HOST_PASSWORD = 'your-email-password'
-DEFAULT_FROM_EMAIL = 'your-email@gmail.com'
+EMAIL_HOST_USER = "your-email@gmail.com"
+EMAIL_HOST_PASSWORD = "your-email-password"
+DEFAULT_FROM_EMAIL = "your-email@gmail.com"

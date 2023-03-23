@@ -12,7 +12,7 @@ class TagListAPIView(generics.ListAPIView):
     pagination_class = PageNumberPagination
 
     def get_queryset(self):
-        query = self.request.GET.get('q')
+        query = self.request.GET.get("q")
         if query:
             queryset = Tag.objects.filter(name__icontains=query)
         else:
@@ -29,7 +29,6 @@ class TagListAPIView(generics.ListAPIView):
         return Response(serializer.data)
 
 
-
 class TagAddAPIView(generics.CreateAPIView):
     serializer_class = TagSerializer
     permission_classes = [IsAdmin]
@@ -37,8 +36,9 @@ class TagAddAPIView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
 class TagRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    lookup_field = 'name'
+    lookup_field = "name"
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [IsAdmin]

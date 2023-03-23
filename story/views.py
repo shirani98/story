@@ -16,10 +16,10 @@ class SearchView(generics.ListAPIView):
     serializer_class = StorySerializer
 
     def get_queryset(self):
-        query = self.request.GET.get('q')
-        category = self.request.GET.get('category')
-        user = self.request.GET.get('user')
-        tag = self.request.GET.get('tag')
+        query = self.request.GET.get("q")
+        category = self.request.GET.get("category")
+        user = self.request.GET.get("user")
+        tag = self.request.GET.get("tag")
 
         if category:
             queryset = Story.objects.filter(categories__name__icontains=category)
@@ -28,7 +28,11 @@ class SearchView(generics.ListAPIView):
         elif tag:
             queryset = Story.objects.filter(tags__name__icontains=tag)
         elif query:
-            queryset = Story.objects.filter(Q(body__icontains=query) | Q(brief__icontains=query) | Q(user__alias__icontains=query))
+            queryset = Story.objects.filter(
+                Q(body__icontains=query)
+                | Q(brief__icontains=query)
+                | Q(user__alias__icontains=query)
+            )
         else:
             # return all stories if no search parameters are provided
             queryset = Story.objects.none()
@@ -47,7 +51,7 @@ class StoryListAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = Story.objects.all()
-        username = self.request.query_params.get('username')
+        username = self.request.query_params.get("username")
         if username:
             queryset = queryset.filter(user__username=username)
         return queryset
@@ -72,39 +76,49 @@ class StoryCreateAPIView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
         # category
-        category_names = data.pop('categories', [])[0].split(",")
-        category_ids = Category.objects.filter(name__in=category_names).values_list('id', flat=True)
+        category_names = data.pop("categories", [])[0].split(",")
+        category_ids = Category.objects.filter(name__in=category_names).values_list(
+            "id", flat=True
+        )
         if len(category_names) != len(category_ids):
-            return Response({'detail': 'Category not found.'},status=status.HTTP_404_NOT_FOUND)
-        data['categories'] = list(category_ids)
+            return Response(
+                {"detail": "Category not found."}, status=status.HTTP_404_NOT_FOUND
+            )
+        data["categories"] = list(category_ids)
 
         # tag
-        tag_names = data.pop('tags', [])
+        tag_names = data.pop("tags", [])
         if tag_names:
             tag_names = tag_names[0].split(",")
-            tag_ids = Tag.objects.filter(name__in=tag_names).values_list('id', flat=True)
+            tag_ids = Tag.objects.filter(name__in=tag_names).values_list(
+                "id", flat=True
+            )
             if len(tag_names) != len(tag_ids):
-                return Response({'detail': 'Tag not found.'},status=status.HTTP_404_NOT_FOUND)
-            data['tags'] = list(tag_ids)
+                return Response(
+                    {"detail": "Tag not found."}, status=status.HTTP_404_NOT_FOUND
+                )
+            data["tags"] = list(tag_ids)
 
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        return Response(data="Story created successfully.", status=status.HTTP_201_CREATED)
+        return Response(
+            data="Story created successfully.", status=status.HTTP_201_CREATED
+        )
+
 
 class StoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    lookup_field = 'slug'
+    lookup_field = "slug"
     queryset = Story.objects.all()
     serializer_class = StorySerializer
     permission_classes = [IsAuthor]
 
 
 class StoryDetailAPIView(generics.RetrieveAPIView):
-    lookup_field = 'slug'
+    lookup_field = "slug"
     queryset = Story.objects.all()
     serializer_class = StoryDetailSerializer
     permission_classes = []
-
 
 
 class SavedStoriesAPIView(generics.ListAPIView):
@@ -120,15 +134,16 @@ class SavedStoriesAPIView(generics.ListAPIView):
 class CreateSaveStoryAPIView(APIView):
     permission_classes = [IsAuth]
 
-    def post(self, request,story_slug, *args, **kwargs):
+    def post(self, request, story_slug, *args, **kwargs):
         user = request.user
         try:
             story = Story.objects.get(slug=story_slug)
         except Story.DoesNotExist:
-            return Response({'detail': 'Story not found.'})
+            return Response({"detail": "Story not found."})
 
         user.saved_stories.add(story)
-        return Response({'detail': 'Story saved successfully.'})
+        return Response({"detail": "Story saved successfully."})
+
 
 class DeleteSavedStoryAPIView(generics.DestroyAPIView):
     serializer_class = StorySerializer
@@ -136,11 +151,11 @@ class DeleteSavedStoryAPIView(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         user = request.user
-        story_id = self.kwargs.get('story_slug')
+        story_id = self.kwargs.get("story_slug")
         try:
             story = user.saved_stories.get(slug=story_id)
         except Story.DoesNotExist:
-            return Response({'detail': 'Story not found in saved stories.'})
+            return Response({"detail": "Story not found in saved stories."})
 
         user.saved_stories.remove(story)
-        return Response({'detail': 'Story removed from saved stories successfully.'})
+        return Response({"detail": "Story removed from saved stories successfully."})
