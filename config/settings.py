@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-ap+rrgk$#dzic)-har4=b(5n=9t(wmu%%alsh&=ts&w7qb6r=_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 CLIENT_BASE_URL = "127.0.0.1:8000"
 
 # Application definition
@@ -57,6 +57,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = ["*"]
+
 
 ROOT_URLCONF = "config.urls"
 
@@ -144,8 +147,6 @@ AUTH_TOKEN_CLASSES = [
     "rest_framework_simplejwt.tokens.AccessToken",
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOWED_ORIGINS = ["*"]
 
 REST_USE_JWT = True
 SIMPLE_JWT = {
